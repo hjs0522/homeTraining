@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class GameEndController : MonoBehaviour
 {
-    public bool m_isGameEnd = false;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag.Equals("Player") && !m_isGameEnd)
+        if (other.gameObject.tag.Equals("Player"))
         {
-            m_isGameEnd = true;
-            GameManager.Instance.StopGame();
+            GameManager.Instance.playerArrivalEnd = true;
         }
     }
 }

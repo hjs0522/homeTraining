@@ -5,31 +5,33 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float m_moveSpeed = 10.0f;
-    public float m_curMovement;
     private float x, z;
-
-    public MovementGaugeController m_movementGaugeCtlr;
+    private int arrivalSquat;
 
     private void Start()
     {
-        m_curMovement = 0.0f;
-        m_movementGaugeCtlr.SetGaugeZero();
+        arrivalSquat = 0;
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (GameManager.Instance.playerInputAccept)
         {
-            PlusMovement(10.0f);
+            z = Input.GetAxis("Vertical") * m_moveSpeed * Time.deltaTime;
+            x = Input.GetAxis("Horizontal") * m_moveSpeed * Time.deltaTime;
+            transform.Translate(x, 0, z);
         }
-        z = Input.GetAxis("Vertical") * m_moveSpeed * Time.deltaTime;
-        x = Input.GetAxis("Horizontal") * m_moveSpeed * Time.deltaTime;
-        transform.Translate(x, 0 ,z);
-    }
 
-    void PlusMovement(float movement)
-    {
-        m_curMovement += movement;
-        m_movementGaugeCtlr.SetMovementGauge(m_curMovement);
+        if (GameManager.Instance.playerArrivalEnd)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                arrivalSquat++;
+                if(arrivalSquat >= 50)
+                {
+                    GameManager.Instance.gameEnded = true;
+                }
+            }
+        }
     }
 }
