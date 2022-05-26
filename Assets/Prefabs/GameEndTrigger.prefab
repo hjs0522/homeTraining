@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8904766412648424658}
   - component: {fileID: 8904766412648424659}
   - component: {fileID: 8904766412648424660}
-  - component: {fileID: 8904766412648424656}
+  - component: {fileID: -6960929404444785579}
   m_Layer: 0
   m_Name: GameEndTrigger
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8904766412648424661}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.036324546, y: -0.5, z: 8.945484}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -98,7 +98,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8904766412648424656
+--- !u!114 &-6960929404444785579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

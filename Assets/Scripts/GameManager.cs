@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,11 +11,16 @@ public class GameManager : MonoBehaviour
     public Transform playerStartPos, enemyStartPos, endTriggerPos;
     private static GameManager instance = null;
     public bool playerArrivalEnd { get; set; }
-    public bool gameEnded { get; set; }
+
     public bool playerInputAccept { get; set; }
 
-    private bool stopGameOperated;
+    public enum GAMESTATUS {ONGOING, CLEAR, FAIL};
 
+    public GAMESTATUS gameStatus;
+
+    public enum GAMEUI { SQUAT, CLEAR, FAIL };
+
+    public GameObject[] gameUIs;
     void Awake()
     {
         if (null == instance)
@@ -45,11 +52,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (gameEnded && !stopGameOperated) StopGame();
-    }
-
     public void StartGame()
     {
         playerObj = Instantiate(playerPrefab, playerStartPos.transform.position, Quaternion.identity);
@@ -57,14 +59,36 @@ public class GameManager : MonoBehaviour
         endTriggerObj = Instantiate(endTriggerPrefab, endTriggerPos.transform.position, Quaternion.identity);
         playerArrivalEnd = false;
         playerInputAccept = true;
-        gameEnded = false;
-        stopGameOperated = false;
+        gameStatus = GAMESTATUS.ONGOING;
+        ClearAllUI();
     }
 
-    public void StopGame()
+    public void GameClear()
     {
-        stopGameOperated = true;
-        playerInputAccept = false;
-        Debug.Log("Game Ended!");
+        if (gameStatus == GAMESTATUS.ONGOING)
+        {
+            gameStatus = GAMESTATUS.CLEAR;
+            playerInputAccept = false;
+            Debug.Log("Game Clear!");
+            ClearAllUI();
+            gameUIs[((int)GAMEUI.CLEAR)].SetActive(true);
+        }
+    }
+    public void GameFail()
+    {
+        if(gameStatus == GAMESTATUS.ONGOING)
+        {
+            gameStatus = GAMESTATUS.FAIL;
+            playerInputAccept = false;
+            Debug.Log("Game Over!");
+            ClearAllUI();
+            gameUIs[((int)GAMEUI.FAIL)].SetActive(true);
+        }
+    }
+
+    public void ClearAllUI()
+    {
+        for(short i = 0; i < gameUIs.Length; i++)
+            gameUIs[i].SetActive(false);
     }
 }
