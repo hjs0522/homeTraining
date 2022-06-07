@@ -6,15 +6,16 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public float m_moveSpeed = 10.0f;
-    public int maxSquatNum;
-    private float x, z;
-    private int curSquatNum;
-    private Text squatText;
+    public static int maxSquatNum;
+    public static int curSquatNum;
+    public static Text squatText;
+
+    public enum PLAYERSTATUS { WALK, SQUAT, JUMP_SQUAT, SIDE_SQUAT, FINAL_SQUAT };
+    public static PLAYERSTATUS playerStatus;
 
     private void Start()
     {
         curSquatNum = 0;
-        squatText = GameManager.Instance.gameUIs[((int)GameManager.GAMEUI.SQUAT)].GetComponentsInChildren<Text>()[1];
     }
 
     void Update()
@@ -23,23 +24,22 @@ public class PlayerController : MonoBehaviour
         {
             if (GameManager.Instance.playerInputAccept)
             {
-                if (GameManager.Instance.playerArrivalEnd)
+                if (playerStatus == PLAYERSTATUS.FINAL_SQUAT)
                 {
-                    if (Input.GetButtonDown("Jump"))
-                    {
-                        curSquatNum++;
-                        squatText.text = curSquatNum.ToString();
-                        if (curSquatNum >= maxSquatNum)
-                        {
-                            GameManager.Instance.GameClear();
-                        }
-                    }
+                    squatText.text = curSquatNum.ToString();
+                    if (curSquatNum >= maxSquatNum) GameManager.Instance.GameClear();
                 }
-                else
+
+                else if (playerStatus == PLAYERSTATUS.SIDE_SQUAT ||
+                         playerStatus == PLAYERSTATUS.JUMP_SQUAT)
                 {
-                    z = Input.GetAxis("Vertical") * m_moveSpeed * Time.deltaTime;
-                    x = Input.GetAxis("Horizontal") * m_moveSpeed * Time.deltaTime;
-                    transform.Translate(x, 0, z);
+                    squatText.text = curSquatNum.ToString();
+                    if (curSquatNum >= maxSquatNum)
+                    {
+                        playerStatus = PLAYERSTATUS.WALK;
+                        Debug.Log("JUMP SQUAT CLEAR");
+                        GameManager.Instance.ClearAllUI();
+                    }
                 }
             }
         }

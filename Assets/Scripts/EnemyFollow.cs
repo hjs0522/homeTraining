@@ -19,6 +19,9 @@ public class EnemyFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        enemyAgent.velocity = new Vector3(0, 0, 0);
+        return;
+
         if(GameManager.Instance.gameStatus == GameManager.GAMESTATUS.ONGOING)
         {
             enemyAgent.SetDestination(player.position);

@@ -16,29 +16,8 @@ public class MovementGaugeController : MonoBehaviour
     public Transform imageStartPos;
     public Transform imageEndPos;
 
-    //private float sliderLvalue;
-    //private float sliderRvalue = 0.0f;
     private Vector3 onNormalVec;
     private Vector3 borderScale;
-
-    //private float SliderLvalue
-    //{
-    //    get
-    //    {
-    //        return sliderLvalue; 
-    //    }
-    //    set
-    //    {
-    //        if (value > 0.0f)
-    //        {
-    //            sliderLvalue = 0.0f;
-    //        }
-    //        else
-    //        {
-    //            sliderLvalue = value;
-    //        }
-    //    }
-    //}
 
     private void Start()
     {

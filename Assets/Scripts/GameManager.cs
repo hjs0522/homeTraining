@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     public GAMESTATUS gameStatus;
 
-    public enum GAMEUI { SQUAT, CLEAR, FAIL };
+    public enum GAMEUI { CLEAR, FAIL, JUMP_SQUAT, FINAL_SQUAT };
 
     public GameObject[] gameUIs;
     void Awake()
@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
 
         StartGame();
     }
-    
 
     public static GameManager Instance
     {
@@ -54,10 +53,10 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        playerObj = Instantiate(playerPrefab, playerStartPos.transform.position, Quaternion.identity);
-        enemyObj = Instantiate(enemyPrefab, enemyStartPos.transform.position, Quaternion.identity);
-        endTriggerObj = Instantiate(endTriggerPrefab, endTriggerPos.transform.position, Quaternion.identity);
-        playerArrivalEnd = false;
+        playerObj = Instantiate(playerPrefab, playerStartPos.transform.position, playerStartPos.rotation);
+        enemyObj = Instantiate(enemyPrefab, enemyStartPos.transform.position, enemyStartPos.rotation);
+        endTriggerObj = Instantiate(endTriggerPrefab, endTriggerPos.transform.position, endTriggerPos.rotation);
+        PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WALK;
         playerInputAccept = true;
         gameStatus = GAMESTATUS.ONGOING;
         ClearAllUI();
