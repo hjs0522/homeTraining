@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject playerPrefab, enemyPrefab, endTriggerPrefab;
     public GameObject playerObj, enemyObj, endTriggerObj;
+    public GameObject clearObj;
     public Transform playerStartPos, enemyStartPos, endTriggerPos;
     private static GameManager instance = null;
     public bool playerArrivalEnd { get; set; }
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     public GAMESTATUS gameStatus;
 
-    public enum GAMEUI { CLEAR, FAIL, JUMP_SQUAT, FINAL_SQUAT };
+    public enum GAMEUI { CLEAR, FAIL, JUMP_SQUAT, SIDE_SQUAT,  FINAL_SQUAT, QUICK_FEAT, WIDE_QUICK_FEAT };
 
     public GameObject[] gameUIs;
     void Awake()
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Game Clear!");
             ClearAllUI();
             gameUIs[((int)GAMEUI.CLEAR)].SetActive(true);
+            clearObj.SetActive(false);
         }
     }
     public void GameFail()

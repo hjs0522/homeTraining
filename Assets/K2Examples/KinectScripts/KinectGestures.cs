@@ -139,7 +139,7 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 
         Quickfeat = 101,
 		WideQuickfeat = 102,
-		SideSquat = 103,
+		LeftSideSquat = 103,
 		JumpSquat = 104,
 		UserGesture5 = 105,
 		UserGesture6 = 106,
@@ -1189,7 +1189,7 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 				{
 					case 0:  // gesture detection - phase 1
 						if(jointsTracked[hipCenterIndex] && 
-							(jointsPos[hipCenterIndex].y > 0.8f) && (jointsPos[hipCenterIndex].y < 1.2f))
+							(jointsPos[hipCenterIndex].y > 0.6f) && (jointsPos[hipCenterIndex].y < 1.2f))
 						{
 							SetGestureJoint(ref gestureData, timestamp, hipCenterIndex, jointsPos[hipCenterIndex]);
 							gestureData.progress = 0.5f;
@@ -1204,6 +1204,41 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 								Mathf.Abs(jointsPos[hipCenterIndex].x - gestureData.jointPos.x) < 0.2f;
 
 							if(isInPose)
+							{
+								Vector3 jointPos = jointsPos[gestureData.joint];
+								CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
+							}
+						}
+						else
+						{
+							// cancel the gesture
+							SetGestureCancelled(ref gestureData);
+						}
+						break;
+				}
+				break;
+
+			case Gestures.LeftSideSquat:
+				switch (gestureData.state)
+				{
+					case 0:  // gesture detection - phase 1
+						if (jointsTracked[hipCenterIndex] && jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] &&
+							(jointsPos[hipCenterIndex].y <= 0.6f))
+						{
+							SetGestureJoint(ref gestureData, timestamp, hipCenterIndex, jointsPos[hipCenterIndex]);
+							gestureData.progress = 0.5f;
+						}
+						break;
+
+					case 1:  // gesture phase 2 = complete
+						if ((timestamp - gestureData.timestamp) < 1.5f)
+						{
+							bool isInPose = jointsTracked[hipCenterIndex] &&
+								(jointsPos[hipCenterIndex].y - gestureData.jointPos.y) < -0.15f &&
+								Mathf.Abs(jointsPos[hipCenterIndex].x - gestureData.jointPos.x) < 0.2f;
+
+
+							if (isInPose)
 							{
 								Vector3 jointPos = jointsPos[gestureData.joint];
 								CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
@@ -1789,15 +1824,22 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 						if (jointsTracked[leftAnkleIndex] && jointsTracked[rightAnkleIndex] &&
 						   jointsPos[leftAnkleIndex].z - jointsPos[rightAnkleIndex].z > 0.1f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) >=
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 0.9f
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 0.8f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) <
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.5f
-								&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.2f)
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.2f
+								&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.5f)
 						{
 							SetGestureJoint(ref gestureData, timestamp, leftAnkleIndex, jointsPos[leftAnkleIndex]);
 							gestureData.progress = 0.3f;
 							if(PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK) 
 								AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+							if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.QUICK_FEAT)
+                            {
+								AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+								PlayerController.curSquatNum++;
+								PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
+							}
+
 						}
 						break;
 
@@ -1808,15 +1850,21 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 							bool isInPose = jointsTracked[rightAnkleIndex] && jointsTracked[leftAnkleIndex] &&
 								(jointsPos[rightAnkleIndex].z - jointsPos[leftAnkleIndex].z) > 0.1f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) >=
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 0.9f
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 0.8f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) <
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.5f
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.2f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.5f;
 
 							if (isInPose)
 							{
 								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
 									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.QUICK_FEAT)
+								{
+									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+									PlayerController.curSquatNum++;
+									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
+								}
 								// go to state 2
 								gestureData.timestamp = timestamp;
 								gestureData.progress = 0.7f;
@@ -1837,15 +1885,21 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 							bool isInPose = jointsTracked[leftAnkleIndex] && jointsTracked[rightAnkleIndex] &&
 								(jointsPos[leftAnkleIndex].z - jointsPos[rightAnkleIndex].z) > 0.1f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) >=
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 0.9f
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 0.8f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) <
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.5f
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.2f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.5f;
 
 							if (isInPose)
 							{
 								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
 									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.QUICK_FEAT)
+								{
+									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+									PlayerController.curSquatNum++;
+									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
+								}
 								// go back to state 1
 								gestureData.timestamp = timestamp;
 								gestureData.progress = 0.8f;
@@ -1869,13 +1923,19 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 						if (jointsTracked[leftAnkleIndex] && jointsTracked[rightAnkleIndex] &&
 						   jointsPos[leftAnkleIndex].z - jointsPos[rightAnkleIndex].z > 0.2f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) >=
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.5f
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.2f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.5f)
 						{
 							SetGestureJoint(ref gestureData, timestamp, leftAnkleIndex, jointsPos[leftAnkleIndex]);
 							gestureData.progress = 0.3f;
 							if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
 								AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+							if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT)
+							{
+								AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+								PlayerController.curSquatNum++;
+								PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
+							}
 						}
 						break;
 
@@ -1886,7 +1946,7 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 							bool isInPose = jointsTracked[rightAnkleIndex] && jointsTracked[leftAnkleIndex] &&
 								(jointsPos[rightAnkleIndex].z - jointsPos[leftAnkleIndex].z) > 0.2f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) >=
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.5f
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.2f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.5f;
 
 
@@ -1894,6 +1954,12 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 							{
 								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
 									AvatarController.offsetNode.transform.Translate(0.0f,0.0f,2.0f);
+								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT)
+								{
+									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+									PlayerController.curSquatNum++;
+									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
+								}
 								// go to state 2
 								gestureData.timestamp = timestamp;
 								gestureData.progress = 0.7f;
@@ -1914,14 +1980,20 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 							bool isInPose = jointsTracked[leftAnkleIndex] && jointsTracked[rightAnkleIndex] &&
 								(jointsPos[leftAnkleIndex].z - jointsPos[rightAnkleIndex].z) > 0.2f
 								&& Mathf.Abs(jointsPos[leftAnkleIndex].x - jointsPos[rightAnkleIndex].x) >=
-								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.5f
-								&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.2f;
+								Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.2f
+								&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.5f;
 
 
 							if (isInPose)
 							{
 								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
 									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT)
+								{
+									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+									PlayerController.curSquatNum++;
+									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
+								}
 								// go back to state 1
 								gestureData.timestamp = timestamp;
 								gestureData.progress = 0.8f;
@@ -1936,54 +2008,6 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 						break;
 				}
 				break;
-
-			//case Gestures.JumpSquat:
-			//	switch (gestureData.state)
-			//	{
-			//		case 0:  // gesture detection - phase 1
-			//			if (jointsTracked[hipCenterIndex] &&
-			//				(jointsPos[hipCenterIndex].y <= 0.7f))
-			//			{
-			//				SetGestureJoint(ref gestureData, timestamp, hipCenterIndex, jointsPos[hipCenterIndex]);
-			//				gestureData.progress = 0.3f;
-			//			}
-			//			break;
-
-			//		case 1:  // gesture detection - phase 1
-
-			//			bool isInPose = jointsTracked[hipCenterIndex] &&
-			//				(jointsPos[hipCenterIndex].y > 0.8f) && (jointsPos[hipCenterIndex].y < 1.2f);
-
-			//			if (isInPose)
-			//			{
-			//				SetGestureJoint(ref gestureData, timestamp, hipCenterIndex, jointsPos[hipCenterIndex]);
-			//				gestureData.timestamp = timestamp;
-			//				gestureData.progress = 0.7f;
-			//				gestureData.state = 2;
-			//			}
-			//			break;
-
-			//		case 2:  // gesture phase 2 = complete
-			//			if ((timestamp - gestureData.timestamp) < 1.0f)
-			//			{
-			//				bool isInPose = jointsTracked[hipCenterIndex] &&
-			//					(jointsPos[hipCenterIndex].y - gestureData.jointPos.y) > 0.15f &&
-			//					Mathf.Abs(jointsPos[hipCenterIndex].x - gestureData.jointPos.x) < 0.2f;
-
-			//				if (isInPose)
-			//				{
-			//					Vector3 jointPos = jointsPos[gestureData.joint];
-			//					CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
-			//				}
-			//			}
-			//			else
-			//			{
-			//				// cancel the gesture
-			//				SetGestureCancelled(ref gestureData);
-			//			}
-			//			break;
-			//	}
-			//	break;
 		}
     }
 

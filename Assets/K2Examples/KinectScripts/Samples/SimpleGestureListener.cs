@@ -111,12 +111,19 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 		if(gesture == KinectGestures.Gestures.Jump && PlayerController.playerStatus == PlayerController.PLAYERSTATUS.JUMP_SQUAT)
         {
 			PlayerController.curSquatNum++;
-
+			AvatarController.offsetNode.transform.Translate(0.0f, 1.5f, 1.5f);
 			Debug.Log("JUMP SQUAT!");
         }
 
-       // Debug.Log("Completed : " + gesture.ToString());
-		
+		if (gesture == KinectGestures.Gestures.Squat && PlayerController.playerStatus == PlayerController.PLAYERSTATUS.SIDE_SQUAT)
+		{
+			PlayerController.curSquatNum++;
+			AvatarController.offsetNode.transform.Translate(-2.2f, 0.0f, 0.0f);
+			Debug.Log("SIDE SQUAT!");
+		}
+
+		// Debug.Log("Completed : " + gesture.ToString());
+
 		return true;
 	}
 

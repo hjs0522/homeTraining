@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public static int curSquatNum;
     public static Text squatText;
 
-    public enum PLAYERSTATUS { WALK, SQUAT, JUMP_SQUAT, SIDE_SQUAT, FINAL_SQUAT };
+    public enum PLAYERSTATUS { WALK, SQUAT, JUMP_SQUAT, SIDE_SQUAT, FINAL_SQUAT, QUICK_FEAT , WIDE_QUICK_FEAT};
     public static PLAYERSTATUS playerStatus;
 
     private void Start()
@@ -39,6 +39,28 @@ public class PlayerController : MonoBehaviour
                         playerStatus = PLAYERSTATUS.WALK;
                         Debug.Log("JUMP SQUAT CLEAR");
                         GameManager.Instance.ClearAllUI();
+                    }
+                }
+
+                else if (playerStatus == PLAYERSTATUS.QUICK_FEAT||
+                    playerStatus == PLAYERSTATUS.WIDE_QUICK_FEAT)
+                {
+                    if (curSquatNum >= maxSquatNum)
+                    {
+                        playerStatus = PLAYERSTATUS.WALK;
+                        Debug.Log("JUMP SQUAT CLEAR");
+                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.QUICK_FEAT].SetActive(false);
+                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.WIDE_QUICK_FEAT].SetActive(false);
+                    }
+                    else if (curSquatNum % 2 == 0)
+                    {
+                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.QUICK_FEAT].SetActive(true);
+                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.WIDE_QUICK_FEAT].SetActive(false);
+                    }
+                    else
+                    {
+                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.QUICK_FEAT].SetActive(false);
+                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.WIDE_QUICK_FEAT].SetActive(true);
                     }
                 }
             }
