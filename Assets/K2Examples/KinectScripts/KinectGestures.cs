@@ -1839,7 +1839,10 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 								PlayerController.curSquatNum++;
 								PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
 							}
-
+							for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+							{
+								GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.005f);
+							}
 						}
 						break;
 
@@ -1864,6 +1867,10 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
 									PlayerController.curSquatNum++;
 									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
+								}
+								for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+								{
+									GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.005f);
 								}
 								// go to state 2
 								gestureData.timestamp = timestamp;
@@ -1899,6 +1906,10 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
 									PlayerController.curSquatNum++;
 									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
+								}
+								for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+								{
+									GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.005f);
 								}
 								// go back to state 1
 								gestureData.timestamp = timestamp;
@@ -1936,6 +1947,10 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 								PlayerController.curSquatNum++;
 								PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
 							}
+							for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+							{
+								GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.005f);
+							}
 						}
 						break;
 
@@ -1959,6 +1974,10 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
 									PlayerController.curSquatNum++;
 									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
+								}
+								for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+								{
+									GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.005f);
 								}
 								// go to state 2
 								gestureData.timestamp = timestamp;
@@ -1993,6 +2012,10 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
 									PlayerController.curSquatNum++;
 									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
+								}
+								for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+								{
+									GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.005f);
 								}
 								// go back to state 1
 								gestureData.timestamp = timestamp;

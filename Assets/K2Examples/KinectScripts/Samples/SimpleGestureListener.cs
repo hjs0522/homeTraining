@@ -106,12 +106,20 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 		if(gesture == KinectGestures.Gestures.Squat && PlayerController.playerStatus == PlayerController.PLAYERSTATUS.FINAL_SQUAT)
         {
 			PlayerController.curSquatNum++;
-        }
+			for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+			{
+				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.01f);
+			}
+		}
 
 		if(gesture == KinectGestures.Gestures.Jump && PlayerController.playerStatus == PlayerController.PLAYERSTATUS.JUMP_SQUAT)
         {
 			PlayerController.curSquatNum++;
 			AvatarController.offsetNode.transform.Translate(0.0f, 1.5f, 1.5f);
+			for(int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+            {
+				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.01f);
+			}
 			Debug.Log("JUMP SQUAT!");
         }
 
@@ -120,6 +128,10 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 			PlayerController.curSquatNum++;
 			AvatarController.offsetNode.transform.Translate(-2.2f, 0.0f, 0.0f);
 			Debug.Log("SIDE SQUAT!");
+			for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+			{
+				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.01f);
+			}
 		}
 
 		// Debug.Log("Completed : " + gesture.ToString());

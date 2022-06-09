@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject clearObj;
     public Transform playerStartPos, enemyStartPos, endTriggerPos;
     private static GameManager instance = null;
+    public List<Transform> playerMorphs;
+    private Transform[] playerTransforms;
     public bool playerArrivalEnd { get; set; }
 
     public bool playerInputAccept { get; set; }
@@ -58,6 +60,15 @@ public class GameManager : MonoBehaviour
         enemyObj = Instantiate(enemyPrefab, enemyStartPos.transform.position, enemyStartPos.rotation);
         endTriggerObj = Instantiate(endTriggerPrefab, endTriggerPos.transform.position, endTriggerPos.rotation);
         PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WALK;
+        playerMorphs = new List<Transform>();
+        playerTransforms = playerObj.GetComponentsInChildren<Transform>();
+        for(int i = 0; i< playerTransforms.Length; i++)
+        {
+            if (playerTransforms[i].gameObject.tag.CompareTo("PlayerMorph") == 0)
+            {
+                playerMorphs.Add(playerTransforms[i]);
+            }
+        }
         playerInputAccept = true;
         gameStatus = GAMESTATUS.ONGOING;
         ClearAllUI();

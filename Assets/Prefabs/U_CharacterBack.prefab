@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 5375775947601379360}
   m_Layer: 0
   m_Name: joint_HipMaster
-  m_TagString: Untagged
+  m_TagString: PlayerMorph
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
