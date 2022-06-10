@@ -23,7 +23,8 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 		// as an example - detect these user specific gestures
 		KinectManager manager = KinectManager.Instance;
 
-		manager.DetectGesture(userId, KinectGestures.Gestures.Jump);
+		manager.DetectGesture(userId, KinectGestures.Gestures.JumpSquat);
+		manager.DetectGesture(userId, KinectGestures.Gestures.LeftSideSquat);
 		manager.DetectGesture(userId, KinectGestures.Gestures.Squat);
 
 		manager.DetectGesture(userId, KinectGestures.Gestures.Quickfeat);
@@ -108,29 +109,29 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 			PlayerController.curSquatNum++;
 			for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
 			{
-				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.01f);
+				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.012f);
 			}
 		}
 
-		if(gesture == KinectGestures.Gestures.Jump && PlayerController.playerStatus == PlayerController.PLAYERSTATUS.JUMP_SQUAT)
+		if(gesture == KinectGestures.Gestures.JumpSquat && PlayerController.playerStatus == PlayerController.PLAYERSTATUS.JUMP_SQUAT)
         {
 			PlayerController.curSquatNum++;
 			AvatarController.offsetNode.transform.Translate(0.0f, 1.5f, 1.5f);
 			for(int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
             {
-				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.01f);
+				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.012f);
 			}
 			Debug.Log("JUMP SQUAT!");
         }
 
-		if (gesture == KinectGestures.Gestures.Squat && PlayerController.playerStatus == PlayerController.PLAYERSTATUS.SIDE_SQUAT)
+		if (gesture == KinectGestures.Gestures.LeftSideSquat && PlayerController.playerStatus == PlayerController.PLAYERSTATUS.SIDE_SQUAT)
 		{
 			PlayerController.curSquatNum++;
 			AvatarController.offsetNode.transform.Translate(-2.2f, 0.0f, 0.0f);
 			Debug.Log("SIDE SQUAT!");
 			for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
 			{
-				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.01f);
+				GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.02f, 0.0f, 0.012f);
 			}
 		}
 
