@@ -1924,18 +1924,18 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 							{
 								SetGestureJoint(ref gestureData, timestamp, leftAnkleIndex, jointsPos[leftAnkleIndex]);
 								gestureData.progress = 0.3f;
-								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
-									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
-								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.QUICK_FEAT)
-								{
-									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
-									PlayerController.curSquatNum++;
-									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
-								}
-								for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
-								{
-									GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.006f);
-								}
+								// if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
+								// 	AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+								// if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.QUICK_FEAT)
+								// {
+									// AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+									// PlayerController.curSquatNum++;
+									// PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
+								// }
+								// for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+								// {
+								// 	GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.006f);
+								// }
 							}
 							break;
 
@@ -1959,7 +1959,8 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									{
 										AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
 										PlayerController.curSquatNum++;
-										PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
+										if(PlayerController.curSquatNum % 2 == 0 && PlayerController.curSquatNum > 0)
+											PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
 									}
 									for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
 									{
@@ -1998,7 +1999,8 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									{
 										AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
 										PlayerController.curSquatNum++;
-										PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
+										if(PlayerController.curSquatNum % 2 == 0 && PlayerController.curSquatNum > 0)
+											PlayerController.playerStatus = PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT;
 									}
 									for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
 									{
@@ -2037,18 +2039,18 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 							{
 								SetGestureJoint(ref gestureData, timestamp, leftAnkleIndex, jointsPos[leftAnkleIndex]);
 								gestureData.progress = 0.3f;
-								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
-									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
-								if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT)
-								{
-									AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
-									PlayerController.curSquatNum++;
-									PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
-								}
-								for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
-								{
-									GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.006f);
-								}
+								// if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
+								// 	AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+								// if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WIDE_QUICK_FEAT)
+								// {
+								// 	AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
+								// 	PlayerController.curSquatNum++;
+								// 	PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
+								// }
+								// for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
+								// {
+								// 	GameManager.Instance.playerMorphs[i].localScale += new Vector3(0.01f, 0.0f, 0.006f);
+								// }
 							}
 							break;
 
@@ -2062,7 +2064,6 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									Mathf.Abs(jointsPos[leftShoulderIndex].x - jointsPos[rightShoulderIndex].x) * 1.2f
 									&& Mathf.Abs(jointsPos[leftAnkleIndex].y - jointsPos[rightAnkleIndex].y) <= 0.3f;
 
-
 								if (isInPose)
 								{
 									if (PlayerController.playerStatus == PlayerController.PLAYERSTATUS.WALK)
@@ -2071,7 +2072,8 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									{
 										AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
 										PlayerController.curSquatNum++;
-										PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
+										if(PlayerController.curSquatNum % 2 == 0 && PlayerController.curSquatNum > 0)
+											PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
 									}
 									for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
 									{
@@ -2109,7 +2111,8 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 									{
 										AvatarController.offsetNode.transform.Translate(0.0f, 0.0f, 2.0f);
 										PlayerController.curSquatNum++;
-										PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
+										if(PlayerController.curSquatNum % 2 == 0 && PlayerController.curSquatNum > 0)
+											PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
 									}
 									for (int i = 0; i < GameManager.Instance.playerMorphs.Count; i++)
 									{
@@ -2132,6 +2135,5 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 
 				break;
 		}
-    }
-
+	}
 }

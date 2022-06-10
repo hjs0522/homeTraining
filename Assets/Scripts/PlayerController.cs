@@ -52,15 +52,15 @@ public class PlayerController : MonoBehaviour
                         GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.QUICK_FEAT].SetActive(false);
                         GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.WIDE_QUICK_FEAT].SetActive(false);
                     }
-                    else if (curSquatNum % 2 == 0)
-                    {
-                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.QUICK_FEAT].SetActive(true);
-                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.WIDE_QUICK_FEAT].SetActive(false);
-                    }
-                    else
+                    else if (curSquatNum % 4 == 2 || curSquatNum % 4 == 3)
                     {
                         GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.QUICK_FEAT].SetActive(false);
                         GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.WIDE_QUICK_FEAT].SetActive(true);
+                    }
+                    else if (curSquatNum % 4 == 0 || curSquatNum == 1)
+                    {
+                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.QUICK_FEAT].SetActive(true);
+                        GameManager.Instance.gameUIs[(int)GameManager.GAMEUI.WIDE_QUICK_FEAT].SetActive(false);
                     }
                 }
             }

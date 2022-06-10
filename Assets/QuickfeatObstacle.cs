@@ -10,7 +10,7 @@ public class QuickfeatObstacle : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PlayerController.curSquatNum = 0;
-            PlayerController.maxSquatNum = 5;
+            PlayerController.maxSquatNum = 10;
             PlayerController.playerStatus = PlayerController.PLAYERSTATUS.QUICK_FEAT;
             GameManager.Instance.gameUIs[((int)GameManager.GAMEUI.QUICK_FEAT)].SetActive(true);
         }
