@@ -22,7 +22,7 @@ public class EnemyFollow : MonoBehaviour
         //enemyAgent.velocity = new Vector3(0, 0, 0);
         //return;
 
-        if(GameManager.Instance.gameStatus == GameManager.GAMESTATUS.ONGOING)
+        if (GameManager.Instance.gameStatus == GameManager.GAMESTATUS.ONGOING)
         {
             Vector3 destination = new Vector3(player.position.x, player.position.y, player.position.z);
             enemyAgent.SetDestination(destination);
